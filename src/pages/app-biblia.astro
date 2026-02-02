@@ -724,6 +724,34 @@ import PageLayout from '../layouts/PageLayout.astro';
     ::-webkit-scrollbar-thumb:hover {
       background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
     }
+/* --- Mejoras de Oro Puro --- */
+
+/* Color carmesí para las palabras del Maestro (etiqueta <b>) */
+.txt b {
+    color: #b91c1c; 
+    font-weight: 600; /* Un poco de grosor para que se note la autoridad */
+}
+
+/* Ajuste para que en modo oscuro no se pierda el rojo */
+body.dark-mode .txt b {
+    color: #ff6b6b; 
+}
+
+/* Estilo para el botón de Enfoque */
+.btn-tool {
+    background: #f0f4f1;
+    border: 1px solid #d4a574;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.btn-tool:hover {
+    background: #d4a574;
+    color: white;
+}
   </style>
 
   <div class="main-container">
