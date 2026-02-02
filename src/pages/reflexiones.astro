@@ -23,6 +23,11 @@ import PageLayout from '../layouts/PageLayout.astro';
           <div class="reflection-body">
             <p>La paz no es la ausencia de problemas, sino saber en quién confías mientras los atraviesas. Si tu fundamento es la Roca, la tormenta solo demuestra lo firme que estás.</p>
           </div>
+          <div class="share-area">
+            <button class="btn-whatsapp" onclick="compartirMensaje(this)">
+                <span>Compartir Esperanza</span>
+            </button>
+          </div>
         </div>
       </article>
 
@@ -36,6 +41,11 @@ import PageLayout from '../layouts/PageLayout.astro';
           </blockquote>
           <div class="reflection-body">
             <p>El afán es un motor que hace ruido pero no avanza. La enseñanza pura es el descanso activo: haz tu parte hoy y deja que el Creador de los tiempos gestione el calendario.</p>
+          </div>
+          <div class="share-area">
+            <button class="btn-whatsapp" onclick="compartirMensaje(this)">
+                <span>Compartir Esperanza</span>
+            </button>
           </div>
         </div>
       </article>
@@ -51,130 +61,44 @@ import PageLayout from '../layouts/PageLayout.astro';
           <div class="reflection-body">
             <p>La Verdad no es una opinión ni un sentimiento, es una Persona. La verdadera libertad no es hacer lo que uno quiere, sino tener el poder de hacer lo que es correcto ante Dios.</p>
           </div>
+          <div class="share-area">
+            <button class="btn-whatsapp" onclick="compartirMensaje(this)">
+                <span>Compartir Esperanza</span>
+            </button>
+          </div>
         </div>
       </article>
     </div>
   </div>
 
   <style>
-    .reflexiones-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 4rem 1.5rem;
-    }
-
-    .header-section {
-      text-align: center;
-      margin-bottom: 5rem;
-    }
-
-    .pre-title {
-      display: block;
-      color: #d4a574;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 8vw, 3.5rem);
-      color: #1a4d2e;
-      margin-bottom: 1rem;
-    }
-
-    .intro-text {
-      font-size: 1.2rem;
-      color: #5d6d7e;
-      font-style: italic;
-    }
-
-    .divider {
-      width: 60px;
-      height: 3px;
-      background: #d4a574;
-      margin: 2rem auto;
-    }
-
-    .grid-reflexiones {
-      display: flex;
-      flex-direction: column;
-      gap: 4rem;
-    }
-
-    .card-reflexion {
-      background: #ffffff;
-      border-radius: 2px; /* Estilo libro */
-      padding: 3rem;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-      border-left: 1px solid rgba(212, 165, 116, 0.3);
-      position: relative;
-    }
-
-    .topic {
-      color: #d4a574;
-      font-size: 0.8rem;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      margin: 1rem 0 2rem 0;
-      color: #1a202c;
-    }
-
-    .bible-quote {
-      margin: 0;
-      padding: 1.5rem 2rem;
-      background: #f9fbf9;
-      border-radius: 8px;
-      font-size: 1.25rem;
-      line-height: 1.6;
-      color: #1a4d2e;
-      font-weight: 600;
-      position: relative;
-    }
-
-    .bible-quote cite {
-      display: block;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #5d6d7e;
-      text-align: right;
-      font-weight: normal;
-    }
-
-    .reflection-body {
-      margin-top: 2rem;
-      font-size: 1.15rem;
-      line-height: 1.9;
-      color: #4a5568;
-    }
-
-    /* Efecto de aparición al bajar scroll */
-    .card-reflexion {
-      animation: fadeInUp 0.8s ease backwards;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .card-reflexion {
-        padding: 1.5rem;
-      }
-    }
+    .reflexiones-container { max-width: 800px; margin: 0 auto; padding: 4rem 1.5rem; }
+    .header-section { text-align: center; margin-bottom: 5rem; }
+    .pre-title { display: block; color: #d4a574; text-transform: uppercase; letter-spacing: 3px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+    h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 3.5rem); color: #1a4d2e; margin-bottom: 1rem; }
+    .intro-text { font-size: 1.2rem; color: #5d6d7e; font-style: italic; }
+    .divider { width: 60px; height: 3px; background: #d4a574; margin: 2rem auto; }
+    .grid-reflexiones { display: flex; flex-direction: column; gap: 4rem; }
+    .card-reflexion { background: #ffffff; border-radius: 8px; padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.03); border-left: 1px solid rgba(212, 165, 116, 0.3); }
+    .topic { color: #d4a574; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
+    h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 1rem 0 2rem 0; color: #1a202c; }
+    .bible-quote { margin: 0; padding: 1.5rem 2rem; background: #f9fbf9; border-radius: 8px; font-size: 1.25rem; line-height: 1.6; color: #1a4d2e; font-weight: 600; }
+    .bible-quote cite { display: block; margin-top: 1rem; font-size: 0.9rem; color: #5d6d7e; text-align: right; font-weight: normal; }
+    .reflection-body { margin-top: 2rem; font-size: 1.15rem; line-height: 1.9; color: #4a5568; }
+    .share-area { margin-top: 2rem; border-top: 1px dashed #eee; padding-top: 1.5rem; }
+    .btn-whatsapp { background: #25d366; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; font-weight: bold; cursor: pointer; }
+    @media (max-width: 600px) { .card-reflexion { padding: 1.5rem; } }
   </style>
+
+  <script is:inline>
+    function compartirMensaje(btn) {
+        const card = btn.closest('.card-reflexion');
+        const titulo = card.querySelector('h2').innerText;
+        const cita = card.querySelector('.bible-quote').innerText;
+        const url = window.location.href;
+        const textoFinal = `📖 *${titulo}*\n\n${cita}\n\nLee más en: ${url}`;
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(textoFinal)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+  </script>
 </PageLayout>
