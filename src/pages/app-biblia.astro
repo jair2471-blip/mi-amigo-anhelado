@@ -181,35 +181,44 @@ import PageLayout from '../layouts/PageLayout.astro';
     }
 
     .btn-tool {
-      /* FORZAMOS el fondo verde oscuro */
+      /* Fondo verde sólido y oscuro para que el blanco resalte sí o sí */
       background: #1a4d2e !important; 
-      /* FORZAMOS el texto blanco */
-      color: #ffffff !important; 
+      color: #ffffff !important;
       
-      border: 1px solid #d4a574;
+      /* Borde dorado más marcado */
+      border: 2px solid #d4a574 !important;
+      
       font-size: 0.95rem;
       cursor: pointer;
-      padding: 0.75rem 1.5rem;
-      border-radius: 14px;
-      transition: all 0.3s ease;
+      padding: 0.75rem 1.2rem;
+      border-radius: 12px;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 700; /* Más negrita para que se lea mejor */
+      gap: 0.6rem;
+      font-weight: 800; /* Texto bien grueso */
       font-family: 'Crimson Text', serif;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      position: relative;
-      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
     }
 
-    /* Esto es para que los iconos y el texto dentro del botón se vean sí o sí */
-    .btn-tool * {
+    /* Esto obliga a que el texto y los iconos dentro del botón sean blancos */
+    .btn-tool, 
+    .btn-tool span, 
+    .btn-tool i {
       color: #ffffff !important;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Sombrita al texto para más claridad */
     }
 
     .btn-tool:hover {
-      background: #2d5a3f !important; /* Un verde un poco más claro al pasar el mouse */
-      transform: translateY(-2px);
+      background: #d4a574 !important; /* Cambia a dorado al pasar el mouse */
+      color: #1a4d2e !important;
+      transform: scale(1.05);
+    }
+
+    /* Para que el texto no se vea opaco al pasar el mouse */
+    .btn-tool:hover * {
+      color: #1a4d2e !important;
+      text-shadow: none;
     }
 
     /* Acordeones majestuosos */
