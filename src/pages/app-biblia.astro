@@ -2,26 +2,18 @@
 import PageLayout from '../layouts/PageLayout.astro';
 ---
 
-<PageLayout title="Biblia 365 - El Amigo Anhelado">
+<PageLayout title="Biblia 365 - Misión Marte">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" is:inline></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
 
   <style is:inline>
     :root { --primary: #1a4d2e; --accent: #d4a574; --bg: #faf8f5; --text: #1a202c; --surface: #ffffff; }
     body.dark-mode { --bg: #0a0e0d; --text: #f7fafc; --surface: #1a1f1e; --primary: #52b788; }
-
-    body { 
-      background-color: var(--bg); color: var(--text); font-family: 'Crimson Text', serif; 
-      margin: 0; display: flex; flex-direction: column; align-items: center; 
-    }
-
+    body { background-color: var(--bg); color: var(--text); font-family: 'Crimson Text', serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
     .main-container { width: 100%; max-width: 700px; padding: 20px; box-sizing: border-box; }
-
-    /* Toolbar y Navegación */
     .toolbar { display: flex; justify-content: space-between; align-items: center; background: var(--surface); padding: 10px 20px; border-radius: 50px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .btn-top { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-    .btn-top:hover { opacity: 0.8; }
-
+    .btn-top { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+    
     /* Acordeón */
     .acordeon-item { background: var(--surface); border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.1); overflow: hidden; }
     .acordeon-header { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
@@ -29,19 +21,17 @@ import PageLayout from '../layouts/PageLayout.astro';
     .acordeon-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; padding: 0 25px; }
     .acordeon-item.active .acordeon-content { max-height: 10000px; padding: 10px 25px 30px; border-top: 1px solid rgba(0,0,0,0.05); }
 
-    /* Versículos */
     .v-txt { font-size: var(--f-size, 20px); line-height: 1.8; margin-bottom: 8px; display: block; padding: 5px; border-radius: 5px; cursor: pointer; }
     .v-num { color: var(--accent); font-weight: bold; margin-right: 10px; font-size: 0.8em; }
-    .resaltado-amarillo { background-color: #fef08a !important; color: #000 !important; }
 
     /* Modal Biblioteca */
     #modalBib { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; place-items: center; z-index: 2000; padding: 20px; }
-    .modal-box { background: var(--bg); padding: 25px; border-radius: 20px; width: 100%; max-width: 600px; max-height: 80vh; overflow-y: auto; text-align: center; }
-    .grid-libros { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 20px; }
-    .btn-lib { background: var(--surface); border: 1px solid var(--accent); padding: 8px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; color: var(--text); }
+    .modal-box { background: var(--bg); padding: 25px; border-radius: 20px; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; }
+    .grid-libros { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
+    .btn-lib { background: var(--surface); border: 1px solid var(--accent); padding: 8px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; }
+    .grid-caps { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 8px; margin-top: 15px; }
 
-    /* Menú Acciones */
-    #menuAcciones { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary); padding: 12px 25px; border-radius: 50px; display: none; gap: 20px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+    #menuAcciones { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary); padding: 12px 25px; border-radius: 50px; display: none; gap: 20px; z-index: 1000; }
     .btn-tool { background: none; border: none; color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; }
   </style>
 
@@ -64,16 +54,14 @@ import PageLayout from '../layouts/PageLayout.astro';
 
     <div style="display:flex; gap:15px; margin: 30px 0 100px;">
       <button class="btn-top" style="flex:1; padding: 15px;" onclick="window.cambiarDia(-1)">◀ Ayer</button>
+      <button class="btn-top" style="flex:1; padding: 15px; background:var(--accent);" onclick="window.irHoy()">Hoy (Plan 365)</button>
       <button class="btn-top" style="flex:1; padding: 15px;" onclick="window.cambiarDia(1)">Mañana ▶</button>
     </div>
   </div>
 
   <div id="modalBib" onclick="if(event.target==this) window.cerrarBib()">
-    <div class="modal-box">
-      <h2 style="font-family: 'Playfair Display'; color: var(--primary);">Biblioteca Sagrada</h2>
-      <div id="listaLibros" class="grid-libros"></div>
-      <button class="btn-top" style="margin-top:20px; width:100%;" onclick="window.cerrarBib()">Cerrar</button>
-    </div>
+    <div class="modal-box" id="contenidoModal">
+      </div>
   </div>
 
   <div id="menuAcciones">
@@ -114,21 +102,19 @@ import PageLayout from '../layouts/PageLayout.astro';
     let fecha = new Date();
     let fontSize = 20;
     let vSel = null;
-    let plan = [];
-    LIBROS.forEach(l => { for(let i=1; i<=l.c; i++) plan.push({n:l.n, id:l.id, c:i}); });
+    let planFull = [];
+    LIBROS.forEach(l => { for(let i=1; i<=l.c; i++) planFull.push({n:l.n, id:l.id, c:i}); });
 
     async function iniciar() {
       const res = await fetch('/biblia.json');
       db = await res.json();
       renderPlan();
-      // Llenar biblioteca
-      document.getElementById('listaLibros').innerHTML = LIBROS.map(l => `<button class="btn-lib" onclick="window.verLibro('${l.id}', '${l.n}')">${l.n}</button>`).join('');
     }
 
     function renderPlan() {
       const diaAnio = Math.floor((fecha - new Date(fecha.getFullYear(), 0, 0)) / 86400000);
       document.getElementById('numDia').innerText = diaAnio;
-      const hoy = plan.slice((diaAnio-1)*3, (diaAnio-1)*3 + 3);
+      const hoy = planFull.slice((diaAnio-1)*3, (diaAnio-1)*3 + 3);
       dibujarLectura(hoy);
     }
 
@@ -155,17 +141,33 @@ import PageLayout from '../layouts/PageLayout.astro';
       window.scrollTo(0,0);
     }
 
-    // Funciones globales
     window.toggleAc = (i) => document.getElementById(`ac-${i}`).classList.toggle('active');
     window.zoom = (n) => { fontSize += n; document.documentElement.style.setProperty('--f-size', fontSize+'px'); };
     window.modoNoche = () => document.body.classList.toggle('dark-mode');
     window.cambiarDia = (n) => { fecha.setDate(fecha.getDate()+n); renderPlan(); };
     window.irHoy = () => { fecha = new Date(); renderPlan(); };
     
-    // Biblioteca
-    window.abrirBib = () => document.getElementById('modalBib').style.display = 'grid';
+    // Biblioteca mejorada
+    window.abrirBib = () => {
+      const modal = document.getElementById('contenidoModal');
+      modal.innerHTML = `<h2 style="font-family:'Playfair Display'; text-align:center;">Libros</h2>
+        <div class="grid-libros">
+          ${LIBROS.map(l => `<button class="btn-lib" onclick="window.verCaps('${l.id}', '${l.n}', ${l.c})">${l.n}</button>`).join('')}
+        </div>`;
+      document.getElementById('modalBib').style.display = 'grid';
+    };
+
+    window.verCaps = (id, n, total) => {
+      const modal = document.getElementById('contenidoModal');
+      let capsHtml = "";
+      for(let i=1; i<=total; i++) capsHtml += `<button class="btn-lib" onclick="window.irACap('${id}','${n}',${i})">${i}</button>`;
+      modal.innerHTML = `<button onclick="window.abrirBib()" style="margin-bottom:10px; background:none; border:none; cursor:pointer; color:var(--accent);">◀ Volver a libros</button>
+        <h2 style="font-family:'Playfair Display'; text-align:center;">${n}</h2>
+        <div class="grid-caps">${capsHtml}</div>`;
+    };
+
+    window.irACap = (id, n, c) => { window.cerrarBib(); dibujarLectura([{id, n, c}]); };
     window.cerrarBib = () => document.getElementById('modalBib').style.display = 'none';
-    window.verLibro = (id, n) => { window.cerrarBib(); dibujarLectura([{id, n, c: 1}]); };
 
     // Acciones versículo
     window.seleccionarV = (el, ref) => {
@@ -177,12 +179,12 @@ import PageLayout from '../layouts/PageLayout.astro';
     window.resaltar = () => { vSel.el.classList.toggle('resaltado-amarillo'); window.cerrarMenu(); };
     window.copiar = () => { navigator.clipboard.writeText(`${vSel.texto} (${vSel.ref})`); alert("Copiado"); window.cerrarMenu(); };
     window.descargarImg = () => {
-      html2canvas(vSel.el, {backgroundColor: '#faf8f5'}).then(canvas => {
+      html2canvas(vSel.el, {backgroundColor: '#faf8f5', scale: 2}).then(canvas => {
         const a = document.createElement('a'); a.download = `${vSel.ref}.png`; a.href = canvas.toDataURL(); a.click();
       });
       window.cerrarMenu();
     };
-    window.cerrarMenu = () => { document.getElementById('menuAcciones').style.display = 'none'; vSel.el.style.background='none'; };
+    window.cerrarMenu = () => { document.getElementById('menuAcciones').style.display = 'none'; if(vSel) vSel.el.style.background='none'; };
 
     document.addEventListener('DOMContentLoaded', iniciar);
   </script>
