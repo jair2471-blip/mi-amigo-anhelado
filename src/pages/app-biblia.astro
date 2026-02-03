@@ -2,155 +2,137 @@
 import PageLayout from '../layouts/PageLayout.astro';
 ---
 
-<PageLayout title="Biblia 365 - Lectura Centrada">
+<PageLayout title="Biblia 365 - Mi Amigo Anhelado">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
 
   <style is:inline>
-    :root { 
-      --primary: #1a4d2e; 
-      --accent: #d4a574; 
-      --bg: #faf8f5; 
-      --text: #1a202c; 
-      --surface: #ffffff; 
+    :root {
+      --primary: #1a4d2e;
+      --accent: #d4a574;
+      --bg: #faf8f5;
+      --text: #1a202c;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.1);
     }
-    body.dark-mode { 
-      --bg: #0a0e0d; 
-      --text: #f7fafc; 
-      --surface: #1a1f1e; 
-      --primary: #52b788; 
+    body.dark-mode {
+      --bg: #0a0e0d;
+      --text: #f7fafc;
+      --surface: #1a1f1e;
+      --primary: #52b788;
     }
 
-    body { 
-      background: var(--bg); 
-      color: var(--text); 
-      font-family: 'Crimson Text', serif; 
-      margin: 0; 
+    /* ESTO ES LO QUE CENTRA TODO */
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Crimson Text', serif;
+      margin: 0;
       padding: 0;
       display: flex;
       flex-direction: column;
-      align-items: center; /* Centra todo el contenido horizontalmente */
+      align-items: center; /* Centra horizontalmente */
+      min-height: 100vh;
     }
 
-    .container { 
+    .wrapper {
       width: 100%;
-      max-width: 650px; /* Ancho ideal para lectura */
-      margin: 0 auto; 
+      max-width: 750px; /* Ancho máximo para que no se vea gigante */
       padding: 20px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
     }
+
+    .app-header { text-align: center; padding: 20px 0; }
     
-    .header { 
-      text-align: center; 
-      padding: 30px 0; 
-      width: 100%;
-    }
-
-    .dia-badge { 
-      background: var(--primary);
-      color: white;
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
     .toolbar { 
       position: sticky; 
-      top: 15px; 
+      top: 10px; 
       background: var(--surface); 
-      padding: 12px 20px; 
-      border-radius: 50px; /* Estilo píldora */
+      padding: 12px; 
+      border-radius: 15px; 
       display: flex; 
       justify-content: space-between; 
-      align-items: center;
       z-index: 100; 
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      margin-bottom: 30px;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
     }
 
     button { 
+      padding: 10px 18px; 
+      border: none; 
+      border-radius: 8px; 
       background: var(--primary); 
       color: white; 
-      border: none; 
-      padding: 8px 16px; 
-      border-radius: 25px; 
       cursor: pointer; 
-      font-weight: 600;
-      transition: all 0.2s;
+      font-weight: bold; 
+      font-family: inherit;
     }
-    button:hover { opacity: 0.9; transform: translateY(-1px); }
 
-    .lectura-card { 
+    /* EFECTO ACORDEÓN / TARJETAS */
+    .card-lectura { 
       background: var(--surface); 
-      padding: 40px; /* Más espacio interno para que se vea elegante */
       border-radius: 20px; 
+      padding: 30px; 
       margin-bottom: 30px; 
-      border: 1px solid rgba(0,0,0,0.03);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-      text-align: justify; /* Opcional: hace que el texto se vea como libro */
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+      width: 100%; /* Ocupa todo el ancho del wrapper */
+      box-sizing: border-box;
     }
 
-    .titulo-cap { 
-      font-family: 'Playfair Display', serif; 
-      color: var(--primary); 
-      font-size: 2.2rem; 
-      margin-bottom: 25px; 
+    .titulo-libro {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 20px;
       text-align: center;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
     }
 
     .versiculo { 
-      font-size: var(--f-size, 21px); 
+      font-size: var(--f-size, 20px); 
       line-height: 1.8; 
       margin-bottom: 15px; 
-      display: block;
+      display: block; 
     }
+    .v-num { color: var(--accent); font-weight: bold; margin-right: 8px; }
 
-    .v-num { 
-      color: var(--accent); 
-      font-weight: bold; 
-      margin-right: 10px; 
-      font-size: 0.8em;
-      vertical-align: top;
+    .nav-footer { 
+      display: flex; 
+      gap: 15px; 
+      margin-top: 20px; 
+      padding-bottom: 100px; 
     }
-
-    .footer-nav {
-      display: flex;
-      gap: 15px;
-      width: 100%;
-      margin-bottom: 80px;
-    }
-    .btn-big { flex: 1; padding: 15px; font-size: 1rem; }
+    .btn-nav { flex: 1; padding: 18px; font-size: 1.1rem; }
   </style>
 
-  <div class="container">
-    <div class="header">
-      <span class="dia-badge">DÍA <span id="numDia">1</span></span>
-      <h1 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-top: 10px;">La Biblia en 365</h1>
+  <div class="wrapper">
+    <div class="app-header">
+      <h1 style="font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--primary);">BIBLIA 365</h1>
+      <p>Día <span id="numDia">...</span></p>
     </div>
 
     <div class="toolbar">
-      <button onclick="window.irHoy()" style="background: var(--accent)">📅 Hoy</button>
-      <div style="display:flex; gap:10px;">
-        <button onclick="window.zoom(-2)">A-</button>
-        <button onclick="window.zoom(2)">A+</button>
-        <button onclick="window.modoNoche()">🌓</button>
-      </div>
+      <button onclick="window.zoom(-2)">A-</button>
+      <button onclick="window.zoom(2)">A+</button>
+      <button onclick="window.modoNoche()">🌓</button>
     </div>
 
     <div id="lector">
       </div>
 
-    <div class="footer-nav">
-      <button class="btn-big" onclick="window.navegar(-1)">◀ Ayer</button>
-      <button class="btn-big" onclick="window.navegar(1)">Mañana ▶</button>
+    <div class="nav-footer">
+      <button class="btn-nav" onclick="window.cambiarDia(-1)">◀ Anterior</button>
+      <button class="btn-nav" onclick="window.irHoy()">Hoy</button>
+      <button class="btn-nav" onclick="window.cambiarDia(1)">Siguiente ▶</button>
     </div>
   </div>
 
   <script is:inline>
-    // Tu lista de libros con los IDs de tu JSON
+    // Usando los IDs exactos de tu biblia.json
     const LIBROS = [
       {n:'Génesis', id:'genesis', c:50}, {n:'Éxodo', id:'exodo', c:40}, {n:'Levítico', id:'levitico', c:27},
       {n:'Números', id:'numeros', c:36}, {n:'Deuteronomio', id:'deuteronomio', c:34}, {n:'Josué', id:'josue', c:24},
@@ -177,35 +159,36 @@ import PageLayout from '../layouts/PageLayout.astro';
       {n:'Apocalipsis', id:'apocalipsis', c:22}
     ];
 
-    let bibliaDB = null;
-    let fechaActual = new Date();
-    let fontSize = 21;
+    let bibliaJSON = null;
+    let fecha = new Date();
+    let fontSize = 20;
     let planFull = [];
     LIBROS.forEach(l => { for(let i=1; i<=l.c; i++) planFull.push({n:l.n, id:l.id, c:i}); });
 
     async function cargar() {
-      const res = await fetch('/biblia.json');
-      bibliaDB = await res.json();
-      render();
+      try {
+        const res = await fetch('/biblia.json');
+        bibliaJSON = await res.json();
+        mostrar();
+      } catch (e) {
+        document.getElementById('lector').innerHTML = "<p>Error: No se pudo cargar la Biblia.</p>";
+      }
     }
 
-    function render() {
-      const start = new Date(fechaActual.getFullYear(), 0, 0);
-      const diff = fechaActual - start;
-      const oneDay = 1000 * 60 * 60 * 24;
-      const diaAnio = Math.floor(diff / oneDay);
-      
+    function mostrar() {
+      const start = new Date(fecha.getFullYear(), 0, 0);
+      const diaAnio = Math.floor((fecha - start) / 86400000);
       document.getElementById('numDia').innerText = diaAnio;
-      
+
       const idx = (diaAnio - 1) * 3;
-      const lecturas = planFull.slice(idx, idx + 3);
+      const hoy = planFull.slice(idx, idx + 3);
       
       let html = "";
-      lecturas.forEach(it => {
-        const lib = bibliaDB[it.id];
-        const cap = lib ? lib[it.c] : null;
-        if(cap) {
-          html += `<div class="lectura-card"><h2 class="titulo-cap">${it.n} ${it.c}</h2>`;
+      hoy.forEach(item => {
+        const libro = bibliaJSON[item.id];
+        const cap = libro ? libro[item.c] : null;
+        if (cap) {
+          html += `<div class="card-lectura"><h2 class="titulo-libro">${item.n} ${item.cap || item.c}</h2>`;
           Object.entries(cap).forEach(([num, texto]) => {
             const limpio = texto.replace(/^\d+\/n/, '').replace(/\/n/g, '<br>');
             html += `<span class="versiculo"><span class="v-num">${num}</span>${limpio}</span>`;
@@ -219,8 +202,8 @@ import PageLayout from '../layouts/PageLayout.astro';
 
     window.zoom = (n) => { fontSize += n; document.documentElement.style.setProperty('--f-size', fontSize + 'px'); };
     window.modoNoche = () => document.body.classList.toggle('dark-mode');
-    window.navegar = (n) => { fechaActual.setDate(fechaActual.getDate() + n); render(); };
-    window.irHoy = () => { fechaActual = new Date(); render(); };
+    window.cambiarDia = (n) => { fecha.setDate(fecha.getDate() + n); mostrar(); };
+    window.irHoy = () => { fecha = new Date(); mostrar(); };
 
     document.addEventListener('DOMContentLoaded', cargar);
   </script>
