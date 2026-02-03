@@ -13,7 +13,7 @@ import PageLayout from '../layouts/PageLayout.astro';
       --bg: #0a0e0d; --text: #f7fafc; --surface: #1a1f1e; --primary: #52b788; --border: rgba(255,255,255,0.1);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background-color: var(--bg); color: var(--text); font-family: 'Crimson Text', serif; transition: 0.3s; }
+    body { background-color: var(--bg); color: var(--text); font-family: 'Crimson Text', serif; transition: 0.3s; min-height: 100vh; }
     
     .main-container { max-width: 800px; margin: 0 auto; padding: 20px; }
     
@@ -28,7 +28,8 @@ import PageLayout from '../layouts/PageLayout.astro';
       justify-content: space-between; z-index: 100; border: 1px solid var(--border);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px;
     }
-    button { padding: 8px 15px; border: none; border-radius: 8px; background: var(--primary); color: white; cursor: pointer; font-weight: bold; }
+    button { padding: 10px 15px; border: none; border-radius: 8px; background: var(--primary); color: white; cursor: pointer; font-weight: bold; }
+    button:active { transform: scale(0.95); }
 
     /* Modal Biblioteca */
     #modalBiblioteca { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; place-items: center; z-index: 1000; padding: 20px; }
@@ -39,8 +40,8 @@ import PageLayout from '../layouts/PageLayout.astro';
 
     /* Estilos de Lectura */
     .card { background: var(--surface); border-radius: 15px; padding: 25px; margin-bottom: 30px; border: 1px solid var(--border); }
-    .v-num { color: var(--accent); font-weight: bold; margin-right: 8px; font-size: 0.85em; vertical-align: super; }
-    .txt-v { font-size: var(--f-size, 20px); line-height: 1.8; margin-bottom: 15px; text-align: justify; }
+    .v-num { color: var(--accent); font-weight: bold; margin-right: 8px; font-size: 0.85em; }
+    .txt-v { font-size: var(--f-size, 20px); line-height: 1.8; margin-bottom: 15px; }
     .cap-titulo { font-family: 'Playfair Display'; font-size: 2rem; color: var(--primary); margin-bottom: 20px; text-align: center; }
 
     .nav-footer { display: flex; gap: 10px; margin-top: 30px; padding-bottom: 60px; }
@@ -71,7 +72,7 @@ import PageLayout from '../layouts/PageLayout.astro';
     </div>
 
     <div id="lector">
-      <p style="text-align:center; padding: 50px;">Abriendo las Escrituras...</p>
+      <p style="text-align:center; padding: 50px;">Iniciando...</p>
     </div>
 
     <div class="nav-footer">
@@ -83,129 +84,130 @@ import PageLayout from '../layouts/PageLayout.astro';
 
   <div id="modalBiblioteca" onclick="if(event.target==this) window.cerrarLibros()">
     <div class="modal-content">
-      <h2 style="text-align:center; font-family: 'Playfair Display';">Índice de Libros</h2>
-      
+      <h2 style="text-align:center; font-family: 'Playfair Display';">Índice</h2>
       <h3 class="seccion-titulo">Antiguo Testamento</h3>
       <div id="listaAT" class="grid-libros"></div>
-
       <h3 class="seccion-titulo">Nuevo Testamento</h3>
       <div id="listaNT" class="grid-libros"></div>
-
       <button onclick="window.cerrarLibros()" style="width:100%; margin-top:30px; background:var(--accent)">Regresar</button>
     </div>
   </div>
 
- <script is:inline>
-  // LISTA DE LIBROS
-  const booksDB = [
-    {n:'Génesis', f:'genesis', c:50}, {n:'Éxodo', f:'exodo', c:40}, {n:'Levítico', f:'levitico', c:27},
-    {n:'Números', f:'numeros', c:36}, {n:'Deuteronomio', f:'deuteronomio', c:34}, {n:'Josué', f:'josue', c:24},
-    {n:'Jueces', f:'jueces', c:21}, {n:'Rut', f:'rut', c:4}, {n:'1 Samuel', f:'1_samuel', c:31},
-    {n:'2 Samuel', f:'2_samuel', c:24}, {n:'1 Reyes', f:'1_reyes', c:22}, {n:'2 Reyes', f:'2_reyes', c:25},
-    {n:'1 Crónicas', f:'1_cronicas', c:29}, {n:'2 Crónicas', f:'2_cronicas', c:36}, {n:'Esdras', f:'esdras', c:10},
-    {n:'Nehemías', f:'nehemias', c:13}, {n:'Ester', f:'ester', c:10}, {n:'Job', f:'job', c:42},
-    {n:'Salmos', f:'salmos', c:150}, {n:'Proverbios', f:'proverbios', c:31}, {n:'Eclesiastés', f:'eclesiastes', c:12},
-    {n:'Cantares', f:'cantares', c:8}, {n:'Isaías', f:'isaias', c:66}, {n:'Jeremías', f:'jeremias', c:52},
-    {n:'Lamentaciones', f:'lamentaciones', c:5}, {n:'Ezequiel', f:'ezequiel', c:48}, {n:'Daniel', f:'daniel', c:12},
-    {n:'Oseas', f:'oseas', c:14}, {n:'Joel', f:'joel', c:3}, {n:'Amós', f:'amos', c:9},
-    {n:'Abdías', f:'abdias', c:1}, {n:'Jonás', f:'jonas', c:4}, {n:'Miqueas', f:'miqueas', c:7},
-    {n:'Nahúm', f:'nahum', c:3}, {n:'Habacuc', f:'habacuc', c:3}, {n:'Sofonías', f:'sofonias', c:3},
-    {n:'Hageo', f:'hageo', c:2}, {n:'Zacarías', f:'zacarias', c:14}, {n:'Malaquías', f:'malaquias', c:4},
-    {n:'Mateo', f:'mateo', c:28}, {n:'Marcos', f:'marcos', c:16}, {n:'Lucas', f:'lucas', c:24},
-    {n:'Juan', f:'juan', c:21}, {n:'Hechos', f:'hechos', c:28}, {n:'Romanos', f:'romanos', c:16},
-    {n:'1 Corintios', f:'1_corintios', c:16}, {n:'2 Corintios', f:'2_corintios', c:13}, {n:'Gálatas', f:'galatas', c:6},
-    {n:'Efesios', f:'efesios', c:6}, {n:'Filipenses', f:'filipenses', c:4}, {n:'Colosenses', f:'colosenses', c:4},
-    {n:'1 Tesalonicenses', f:'1_tesalonicenses', c:5}, {n:'2 Tesalonicenses', f:'2_tesalonicenses', c:3},
-    {n:'1 Timoteo', f:'1_timoteo', c:6}, {n:'2 Timoteo', f:'2_timoteo', c:4}, {n:'Tito', f:'tito', c:3},
-    {n:'Filemón', f:'filemon', c:1}, {n:'Hebreos', f:'hebreos', c:13}, {n:'Santiago', f:'santiago', c:5},
-    {n:'1 Pedro', f:'1_pedro', c:5}, {n:'2 Pedro', f:'2_pedro', c:3}, {n:'1 Juan', f:'1_juan', c:5},
-    {n:'2 Juan', f:'2_juan', c:1}, {n:'3 Juan', f:'3_juan', c:1}, {n:'Judas', f:'judas', c:1},
-    {n:'Apocalipsis', f:'apocalipsis', c:22}
-  ];
+  <script is:inline>
+    // 1. Datos y Configuración
+    const ESTRUCTURA = [
+      {n:'Génesis', f:'genesis', c:50, t:'AT'}, {n:'Éxodo', f:'exodo', c:40, t:'AT'}, {n:'Levítico', f:'levitico', c:27, t:'AT'},
+      {n:'Números', f:'numeros', c:36, t:'AT'}, {n:'Deuteronomio', f:'deuteronomio', c:34, t:'AT'}, {n:'Josué', f:'josue', c:24, t:'AT'},
+      {n:'Jueces', f:'jueces', c:21, t:'AT'}, {n:'Rut', f:'rut', c:4, t:'AT'}, {n:'1 Samuel', f:'1_samuel', c:31, t:'AT'},
+      {n:'2 Samuel', f:'2_samuel', c:24, t:'AT'}, {n:'1 Reyes', f:'1_reyes', c:22, t:'AT'}, {n:'2 Reyes', f:'2_reyes', c:25, t:'AT'},
+      {n:'1 Crónicas', f:'1_cronicas', c:29, t:'AT'}, {n:'2 Crónicas', f:'2_cronicas', c:36, t:'AT'}, {n:'Esdras', f:'esdras', c:10, t:'AT'},
+      {n:'Nehemías', f:'nehemias', c:13, t:'AT'}, {n:'Ester', f:'ester', c:10, t:'AT'}, {n:'Job', f:'job', c:42, t:'AT'},
+      {n:'Salmos', f:'salmos', c:150, t:'AT'}, {n:'Proverbios', f:'proverbios', c:31, t:'AT'}, {n:'Eclesiastés', f:'eclesiastes', c:12, t:'AT'},
+      {n:'Cantares', f:'cantares', c:8, t:'AT'}, {n:'Isaías', f:'isaias', c:66, t:'AT'}, {n:'Jeremías', f:'jeremias', c:52, t:'AT'},
+      {n:'Lamentaciones', f:'lamentaciones', c:5, t:'AT'}, {n:'Ezequiel', f:'ezequiel', c:48, t:'AT'}, {n:'Daniel', f:'daniel', c:12, t:'AT'},
+      {n:'Oseas', f:'oseas', c:14, t:'AT'}, {n:'Joel', f:'joel', c:3, t:'AT'}, {n:'Amós', f:'amos', c:9, t:'AT'},
+      {n:'Abdías', f:'abdias', c:1, t:'AT'}, {n:'Jonás', f:'jonas', c:4, t:'AT'}, {n:'Miqueas', f:'miqueas', c:7, t:'AT'},
+      {n:'Nahúm', f:'nahum', c:3, t:'AT'}, {n:'Habacuc', f:'habacuc', c:3, t:'AT'}, {n:'Sofonías', f:'sofonias', c:3, t:'AT'},
+      {n:'Hageo', f:'hageo', c:2, t:'AT'}, {n:'Zacarías', f:'zacarias', c:14, t:'AT'}, {n:'Malaquías', f:'malaquias', c:4, t:'AT'},
+      {n:'Mateo', f:'mateo', c:28, t:'NT'}, {n:'Marcos', f:'marcos', c:16, t:'NT'}, {n:'Lucas', f:'lucas', c:24, t:'NT'},
+      {n:'Juan', f:'juan', c:21, t:'NT'}, {n:'Hechos', f:'hechos', c:28, t:'NT'}, {n:'Romanos', f:'romanos', c:16, t:'NT'},
+      {n:'1 Corintios', f:'1_corintios', c:16, t:'NT'}, {n:'2 Corintios', f:'2_corintios', c:13, t:'NT'}, {n:'Gálatas', f:'galatas', c:6, t:'NT'},
+      {n:'Efesios', f:'efesios', c:6, t:'NT'}, {n:'Filipenses', f:'filipenses', c:4, t:'NT'}, {n:'Colosenses', f:'colosenses', c:4, t:'NT'},
+      {n:'1 Tesalonicenses', f:'1_tesalonicenses', c:5, t:'NT'}, {n:'2 Tesalonicenses', f:'2_tesalonicenses', c:3, t:'NT'},
+      {n:'1 Timoteo', f:'1_timoteo', c:6, t:'NT'}, {n:'2 Timoteo', f:'2_timoteo', c:4, t:'NT'}, {n:'Tito', f:'tito', c:3, t:'NT'},
+      {n:'Filemón', f:'filemon', c:1, t:'NT'}, {n:'Hebreos', f:'hebreos', c:13, t:'NT'}, {n:'Santiago', f:'santiago', c:5, t:'NT'},
+      {n:'1 Pedro', f:'1_pedro', c:5, t:'NT'}, {n:'2 Pedro', f:'2_pedro', c:3, t:'NT'}, {n:'1 Juan', f:'1_juan', c:5, t:'NT'},
+      {n:'2 Juan', f:'2_juan', c:1, t:'NT'}, {n:'3 Juan', f:'3_juan', c:1, t:'NT'}, {n:'Judas', f:'judas', c:1, t:'NT'},
+      {n:'Apocalipsis', f:'apocalipsis', c:22, t:'NT'}
+    ];
 
-  let bibliaJSON = null;
-  let fechaActual = new Date();
-  let plan = [];
-  booksDB.forEach(b => { for(let i=1; i<=b.c; i++) plan.push({n:b.n, f:b.f, c:i}); });
+    let bibliaJSON = null;
+    let fecha = new Date();
+    let fontSize = 20;
+    let plan = [];
+    ESTRUCTURA.forEach(b => { for(let i=1; i<=b.c; i++) plan.push({n:b.n, f:b.f, c:i}); });
 
-  // CARGA CON DIAGNÓSTICO
-  async function cargarBiblia() {
-    const contenedor = document.getElementById('lector');
-    try {
-      const res = await fetch('/biblia.json'); 
-      if (!res.ok) throw new Error(`Archivo no encontrado (Status: ${res.status})`);
-      
-      bibliaJSON = await res.json();
-      console.log("Biblia cargada correctamente");
-      cargarLectura(); // Inicia la lectura del día
-    } catch (e) {
-      console.error(e);
-      contenedor.innerHTML = `
-        <div class="card" style="border:2px solid #e76f51; padding:2rem; text-align:center;">
-          <h2 style="color:#e76f51">⚠️ Error al cargar el archivo</h2>
-          <p>No pudimos leer <b>biblia.json</b>.</p>
-          <div style="text-align:left; background:rgba(0,0,0,0.1); padding:1rem; border-radius:10px; margin-top:1rem; font-family:monospace; font-size:0.8rem;">
-            Error: ${e.message}
-          </div>
-          <p style="margin-top:1rem; font-size:0.9rem;">Asegúrate de que el archivo esté en la carpeta <b>public/</b> de tu proyecto Astro.</p>
-        </div>
-      `;
-    }
-  }
-
-  // BUSCADOR INTELIGENTE (Para que aparezca "Juan")
-  function buscarLibro(nombre) {
-    if (!bibliaJSON) return null;
-    // 1. Intento exacto
-    if (bibliaJSON[nombre]) return bibliaJSON[nombre];
-    // 2. Intento flexible (minúsculas, incluye nombre, etc)
-    const keys = Object.keys(bibliaJSON);
-    const encontrada = keys.find(k => k.toLowerCase().includes(nombre.toLowerCase()) || nombre.toLowerCase().includes(k.toLowerCase()));
-    return encontrada ? bibliaJSON[encontrada] : null;
-  }
-
-  function cargarLectura(especifico = null) {
-    const lector = document.getElementById('lector');
-    const hoy = Math.floor((fechaActual - new Date(fechaActual.getFullYear(), 0, 0)) / 86400000);
-    const items = especifico || plan.slice((hoy - 1) * 3, (hoy - 1) * 3 + 3);
-    
-    let html = '';
-    items.forEach(it => {
-      const libroData = buscarLibro(it.n);
-      const capData = libroData ? libroData[it.c] : null;
-
-      if (capData) {
-        html += `<div class="capitulo-acordeon" style="margin-bottom:2rem">
-          <div class="header-info" style="padding:1rem; background:var(--primary); color:white; border-radius:15px 15px 0 0">
-            <h2 style="margin:0">${it.n} ${it.c}</h2>
-          </div>
-          <div class="versiculos" style="background:var(--surface); padding:1.5rem; border-radius:0 0 15px 15px; border:1px solid var(--border)">`;
-        
-        Object.entries(capData).forEach(([num, texto]) => {
-          // Limpieza de texto (/n y números dobles)
-          let textoLimpio = texto
-            .replace(new RegExp('^' + num + '/n'), '')
-            .replace(/^\d+\/n/, '')
-            .replace(/\/n/g, '<br>');
-
-          html += `<p class="versiculo" style="margin-bottom:1rem">
-            <span class="num" style="color:var(--accent); font-weight:bold; margin-right:0.5rem">${num}</span>
-            <span class="txt">${textoLimpio}</span>
-          </p>`;
-        });
-        html += `</div></div>`;
-      } else {
-        html += `<div class="card"><p>No se encontró el contenido para ${it.n} ${it.c}. Revisa si el nombre en el JSON es exacto.</p></div>`;
+    // 2. Funciones Vitales (Carga y Búsqueda)
+    async function cargarBiblia() {
+      const lector = document.getElementById('lector');
+      try {
+        const res = await fetch('/biblia.json'); 
+        if (!res.ok) throw new Error("No se encontró biblia.json en /public");
+        bibliaJSON = await res.json();
+        window.iniciarApp();
+      } catch (e) {
+        lector.innerHTML = `<div class="card" style="color:red; text-align:center"><h3>Error de carga</h3><p>${e.message}</p></div>`;
       }
-    });
+    }
 
-    lector.innerHTML = html;
-    // Actualizar UI de progreso si tienes las funciones
-    if (typeof updateProgressRing === 'function') updateProgressRing(hoy);
-    if (typeof updateStats === 'function') updateStats(hoy);
-  }
+    function buscarLibro(nombre) {
+      if (!bibliaJSON) return null;
+      if (bibliaJSON[nombre]) return bibliaJSON[nombre];
+      const keys = Object.keys(bibliaJSON);
+      const encontrada = keys.find(k => k.toLowerCase().includes(nombre.toLowerCase()) || nombre.toLowerCase().includes(k.toLowerCase()));
+      return encontrada ? bibliaJSON[encontrada] : null;
+    }
 
-  // Evento inicial
-  document.addEventListener('DOMContentLoaded', cargarBiblia);
-</script>
+    window.iniciarApp = () => {
+      const inicio = new Date(fecha.getFullYear(), 0, 0);
+      const diaAnio = Math.floor((fecha - inicio) / 86400000);
+      const idx = (diaAnio - 1) * 3;
+      const hoyItems = plan.slice(idx, idx + 3);
+
+      document.getElementById('diaLabel').innerText = diaAnio;
+      const offset = 238.7 - (diaAnio / 365) * 238.7;
+      document.getElementById('progreso').style.strokeDashoffset = offset;
+
+      renderLectura(hoyItems);
+    };
+
+    function renderLectura(items) {
+      const lector = document.getElementById('lector');
+      let html = '';
+      items.forEach(it => {
+        const libroData = buscarLibro(it.n);
+        const capData = libroData ? libroData[it.c] : null;
+        if (capData) {
+          html += `<div class="card"><h2 class="cap-titulo">${it.n} ${it.c}</h2><div>`;
+          Object.entries(capData).forEach(([num, texto]) => {
+            const numReal = isNaN(num) ? num : (parseInt(num) + (Array.isArray(capData) ? 1 : 0));
+            let tLimpio = texto.replace(new RegExp('^' + numReal + '/n'), '').replace(/^\d+\/n/, '').replace(/\/n/g, '<br>');
+            html += `<p class="txt-v"><span class="v-num">${numReal}</span>${tLimpio}</p>`;
+          });
+          html += `</div></div>`;
+        }
+      });
+      lector.innerHTML = html || '<p style="text-align:center">Contenido no disponible.</p>';
+      window.scrollTo(0,0);
+    }
+
+    // 3. Funciones de Botones (Atadas a window)
+    window.abrirLibros = () => {
+      document.getElementById('listaAT').innerHTML = ESTRUCTURA.filter(b => b.t === 'AT').map(b => `<button class="btn-lib" onclick="window.seleccionarLibro('${b.f}', '${b.n}')">${b.n}</button>`).join('');
+      document.getElementById('listaNT').innerHTML = ESTRUCTURA.filter(b => b.t === 'NT').map(b => `<button class="btn-lib" onclick="window.seleccionarLibro('${b.f}', '${b.n}')">${b.n}</button>`).join('');
+      document.getElementById('modalBiblioteca').style.display = 'grid';
+    };
+
+    window.cerrarLibros = () => document.getElementById('modalBiblioteca').style.display = 'none';
+
+    window.seleccionarLibro = (f, n) => {
+      const libro = ESTRUCTURA.find(l => l.f === f);
+      let caps = [];
+      for(let i = 1; i <= libro.c; i++) caps.push({ f, n, c: i });
+      window.cerrarLibros();
+      renderLectura(caps);
+    };
+
+    window.zoom = (n) => {
+      fontSize += n;
+      document.documentElement.style.setProperty('--f-size', fontSize + 'px');
+    };
+
+    window.modoNoche = () => document.body.classList.toggle('dark-mode');
+    window.irDia = (d) => { fecha.setDate(fecha.getDate() + d); window.iniciarApp(); };
+    window.irHoy = () => { fecha = new Date(); window.iniciarApp(); };
+
+    // Iniciar
+    document.addEventListener('DOMContentLoaded', cargarBiblia);
+  </script>
 </PageLayout>
