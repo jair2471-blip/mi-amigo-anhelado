@@ -155,12 +155,11 @@ import PageLayout from '../layouts/PageLayout.astro';
       renderLectura(hoyItems);
     };
 
-    function renderLectura(items) {
+   function renderLectura(items) {
       const lector = document.getElementById('lector');
       let html = '';
 
       items.forEach(it => {
-        // Buscamos el libro en el JSON por nombre exacto o slug
         const libroData = bibliaJSON[it.n] || bibliaJSON[it.f] || bibliaJSON[it.n.toLowerCase()];
         const capituloData = libroData ? libroData[it.c] : null;
 
@@ -170,16 +169,25 @@ import PageLayout from '../layouts/PageLayout.astro';
             <div>`;
           
           Object.entries(capituloData).forEach(([num, texto]) => {
-            // Si el JSON es un array, sumamos 1 al índice para que el versículo sea correcto
+            // 1. Calculamos el número real (por si es un array o un objeto)
             const numReal = isNaN(num) ? num : (parseInt(num) + (Array.isArray(capituloData) ? 1 : 0));
-            html += `<p class="txt-v"><span class="v-num">${numReal}</span>${texto}</p>`;
+            
+            // 2. LIMPIEZA DEL TEXTO:
+            // - Quitamos el número y el /n que viene al puro principio (ej: "1/n")
+            // - Cambiamos todos los demás "/n" por saltos de línea reales <br>
+            let textoLimpio = texto
+              .replace(new RegExp('^' + numReal + '/n'), '') // Quita el "1/n" del inicio
+              .replace(/^\d+\/n/, '')                         // Por si el número no coincide exacto
+              .replace(/\/n/g, '<br>');                       // Cambia los /n por bajadas de renglón
+
+            html += `<p class="txt-v"><span class="v-num">${numReal}</span>${textoLimpio}</p>`;
           });
 
           html += `</div></div>`;
         }
       });
 
-      lector.innerHTML = html || '<p style="text-align:center">Este contenido no está disponible en el JSON.</p>';
+      lector.innerHTML = html || '<p style="text-align:center">Contenido no disponible.</p>';
       window.scrollTo(0,0);
     }
 
