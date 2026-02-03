@@ -2,33 +2,156 @@
 import PageLayout from '../layouts/PageLayout.astro';
 ---
 
-<PageLayout title="Biblia 365">
+<PageLayout title="Biblia 365 - Lectura Centrada">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+
   <style is:inline>
-    :root { --primary: #1a4d2e; --accent: #d4a574; --bg: #faf8f5; --text: #1a202c; --surface: #ffffff; }
-    body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 20px; }
-    .container { max-width: 650px; margin: 0 auto; }
-    .card { background: var(--surface); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .titulo { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 5px; }
-    .v-num { color: var(--accent); font-weight: bold; margin-right: 8px; font-size: 0.9em; }
-    .btn-nav { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-    .header-dia { text-align: center; font-size: 2rem; font-weight: bold; color: var(--primary); margin-bottom: 10px; }
+    :root { 
+      --primary: #1a4d2e; 
+      --accent: #d4a574; 
+      --bg: #faf8f5; 
+      --text: #1a202c; 
+      --surface: #ffffff; 
+    }
+    body.dark-mode { 
+      --bg: #0a0e0d; 
+      --text: #f7fafc; 
+      --surface: #1a1f1e; 
+      --primary: #52b788; 
+    }
+
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: 'Crimson Text', serif; 
+      margin: 0; 
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centra todo el contenido horizontalmente */
+    }
+
+    .container { 
+      width: 100%;
+      max-width: 650px; /* Ancho ideal para lectura */
+      margin: 0 auto; 
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header { 
+      text-align: center; 
+      padding: 30px 0; 
+      width: 100%;
+    }
+
+    .dia-badge { 
+      background: var(--primary);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .toolbar { 
+      position: sticky; 
+      top: 15px; 
+      background: var(--surface); 
+      padding: 12px 20px; 
+      border-radius: 50px; /* Estilo píldora */
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      z-index: 100; 
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    button { 
+      background: var(--primary); 
+      color: white; 
+      border: none; 
+      padding: 8px 16px; 
+      border-radius: 25px; 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .lectura-card { 
+      background: var(--surface); 
+      padding: 40px; /* Más espacio interno para que se vea elegante */
+      border-radius: 20px; 
+      margin-bottom: 30px; 
+      border: 1px solid rgba(0,0,0,0.03);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+      text-align: justify; /* Opcional: hace que el texto se vea como libro */
+    }
+
+    .titulo-cap { 
+      font-family: 'Playfair Display', serif; 
+      color: var(--primary); 
+      font-size: 2.2rem; 
+      margin-bottom: 25px; 
+      text-align: center;
+    }
+
+    .versiculo { 
+      font-size: var(--f-size, 21px); 
+      line-height: 1.8; 
+      margin-bottom: 15px; 
+      display: block;
+    }
+
+    .v-num { 
+      color: var(--accent); 
+      font-weight: bold; 
+      margin-right: 10px; 
+      font-size: 0.8em;
+      vertical-align: top;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      margin-bottom: 80px;
+    }
+    .btn-big { flex: 1; padding: 15px; font-size: 1rem; }
   </style>
 
   <div class="container">
-    <div class="header-dia">Día <span id="numDia">1</span></div>
-    
-    <div style="display:flex; justify-content: space-between; margin-bottom: 20px;">
-      <button class="btn-nav" onclick="window.cambiarDia(-1)">◀ Anterior</button>
-      <button class="btn-nav" onclick="window.irHoy()">Hoy</button>
-      <button class="btn-nav" onclick="window.cambiarDia(1)">Siguiente ▶</button>
+    <div class="header">
+      <span class="dia-badge">DÍA <span id="numDia">1</span></span>
+      <h1 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-top: 10px;">La Biblia en 365</h1>
     </div>
 
-    <div id="contenido">Cargando Palabra Sagrada...</div>
+    <div class="toolbar">
+      <button onclick="window.irHoy()" style="background: var(--accent)">📅 Hoy</button>
+      <div style="display:flex; gap:10px;">
+        <button onclick="window.zoom(-2)">A-</button>
+        <button onclick="window.zoom(2)">A+</button>
+        <button onclick="window.modoNoche()">🌓</button>
+      </div>
+    </div>
+
+    <div id="lector">
+      </div>
+
+    <div class="footer-nav">
+      <button class="btn-big" onclick="window.navegar(-1)">◀ Ayer</button>
+      <button class="btn-big" onclick="window.navegar(1)">Mañana ▶</button>
+    </div>
   </div>
 
   <script is:inline>
-    // 1. ESTA LISTA TIENE LOS NOMBRES EXACTOS DE TU JSON
-    const PLAN = [
+    // Tu lista de libros con los IDs de tu JSON
+    const LIBROS = [
       {n:'Génesis', id:'genesis', c:50}, {n:'Éxodo', id:'exodo', c:40}, {n:'Levítico', id:'levitico', c:27},
       {n:'Números', id:'numeros', c:36}, {n:'Deuteronomio', id:'deuteronomio', c:34}, {n:'Josué', id:'josue', c:24},
       {n:'Jueces', id:'jueces', c:21}, {n:'Rut', id:'rut', c:4}, {n:'1 Samuel', id:'1-samuel', c:31},
@@ -54,44 +177,50 @@ import PageLayout from '../layouts/PageLayout.astro';
       {n:'Apocalipsis', id:'apocalipsis', c:22}
     ];
 
-    let biblia = null;
-    let fecha = new Date();
-    let listaCapitulos = [];
-    PLAN.forEach(b => { for(let i=1; i<=b.c; i++) listaCapitulos.push({ nombre: b.n, id: b.id, cap: i }); });
+    let bibliaDB = null;
+    let fechaActual = new Date();
+    let fontSize = 21;
+    let planFull = [];
+    LIBROS.forEach(l => { for(let i=1; i<=l.c; i++) planFull.push({n:l.n, id:l.id, c:i}); });
 
     async function cargar() {
       const res = await fetch('/biblia.json');
-      biblia = await res.json();
-      mostrar();
+      bibliaDB = await res.json();
+      render();
     }
 
-    function mostrar() {
-      const dia = Math.floor((fecha - new Date(fecha.getFullYear(), 0, 0)) / 86400000);
-      document.getElementById('numDia').innerText = dia;
+    function render() {
+      const start = new Date(fechaActual.getFullYear(), 0, 0);
+      const diff = fechaActual - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const diaAnio = Math.floor(diff / oneDay);
       
-      const idx = (dia - 1) * 3;
-      const hoy = listaCapitulos.slice(idx, idx + 3);
+      document.getElementById('numDia').innerText = diaAnio;
+      
+      const idx = (diaAnio - 1) * 3;
+      const lecturas = planFull.slice(idx, idx + 3);
       
       let html = "";
-      hoy.forEach(item => {
-        const dataLibro = biblia[item.id];
-        const dataCap = dataLibro ? dataLibro[item.cap] : null;
-
-        if (dataCap) {
-          html += `<div class="card"><h2 class="titulo">${item.nombre} ${item.cap}</h2>`;
-          Object.entries(dataCap).forEach(([num, texto]) => {
+      lecturas.forEach(it => {
+        const lib = bibliaDB[it.id];
+        const cap = lib ? lib[it.c] : null;
+        if(cap) {
+          html += `<div class="lectura-card"><h2 class="titulo-cap">${it.n} ${it.c}</h2>`;
+          Object.entries(cap).forEach(([num, texto]) => {
             const limpio = texto.replace(/^\d+\/n/, '').replace(/\/n/g, '<br>');
-            html += `<p><span class="v-num">${num}</span>${limpio}</p>`;
+            html += `<span class="versiculo"><span class="v-num">${num}</span>${limpio}</span>`;
           });
           html += `</div>`;
         }
       });
-      document.getElementById('contenido').innerHTML = html || "No hay lecturas para este día.";
+      document.getElementById('lector').innerHTML = html;
       window.scrollTo(0,0);
     }
 
-    window.cambiarDia = (n) => { fecha.setDate(fecha.getDate() + n); mostrar(); };
-    window.irHoy = () => { fecha = new Date(); mostrar(); };
+    window.zoom = (n) => { fontSize += n; document.documentElement.style.setProperty('--f-size', fontSize + 'px'); };
+    window.modoNoche = () => document.body.classList.toggle('dark-mode');
+    window.navegar = (n) => { fechaActual.setDate(fechaActual.getDate() + n); render(); };
+    window.irHoy = () => { fechaActual = new Date(); render(); };
 
     document.addEventListener('DOMContentLoaded', cargar);
   </script>
