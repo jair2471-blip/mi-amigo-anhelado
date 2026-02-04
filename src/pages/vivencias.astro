@@ -11,7 +11,7 @@ import PageLayout from '../layouts/PageLayout.astro';
       <p class="subtitle">Historias que Transforman</p>
     </header>
 
-    <div id="loader" style="text-align:center; color: var(--primary);">Cargando historias...</div>
+    <div id="loader" style="text-align:center; color: #1a4d2e;">Cargando historias...</div>
 
     <div id="hero-gallery" style="display:none;">
       </div>
@@ -20,7 +20,33 @@ import PageLayout from '../layouts/PageLayout.astro';
       <button onclick="window.prev()" class="btn-nav">← Anterior</button>
       <button onclick="window.next()" class="btn-nav">Siguiente →</button>
     </div>
-  </div>
+
+    <article class="poder-indexacion">
+      <div class="divider"></div>
+      <h2>La Verdad que Liberta: ¿Por qué mirar a los Héroes de la Fe?</h2>
+      <p>
+        En un mundo saturado de ruido y distracciones, volver a las raíces de la <strong>enseñanza pura de Dios</strong> no es solo una opción, es una necesidad vital. Las vivencias de personajes como <em>Abraham, Ester y Pablo</em> no son simples relatos históricos; son el mapa genético de una fe inquebrantable.
+      </p>
+
+      <h3>Transformación a través del ejemplo</h3>
+      <p>
+        Nuestra plataforma, <strong>Mi Amigo Anhelado</strong>, nace con el propósito de conectar el corazón del hombre moderno con la sabiduría eterna de las Escrituras. Al explorar cada <strong>vivencia bíblica</strong>, no solo leemos una historia; activamos un principio espiritual de perseverancia, lealtad y victoria en Cristo Jesús.
+      </p>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>📖 Escritura sin filtros:</strong> Acceso directo a la Palabra para una meditación profunda.
+        </div>
+        <div class="info-item">
+          <strong>🔥 Inspiración Diaria:</strong> Modelos de vida que desafían nuestra realidad actual.
+        </div>
+      </div>
+
+      <blockquote>
+        "La fe viene por el oír, y el oír, por la palabra de Dios." — Este portal es ese eco necesario para tu crecimiento espiritual.
+      </blockquote>
+    </article>
+    </div>
 
   <style is:inline>
     :root { --primary: #1a4d2e; --accent: #d4a574; --bg: #faf8f5; --text: #2c3e50; }
@@ -29,48 +55,37 @@ import PageLayout from '../layouts/PageLayout.astro';
     .title { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primary); margin: 0; }
     .subtitle { color: var(--accent); font-weight: bold; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 3px; }
     
+    /* Estilos de la Tarjeta */
     .card {
       background: white; border-radius: 25px; padding: 40px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.08);
       border-top: 12px solid var(--primary);
       animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
-
-    .badge-tema {
-      background: rgba(212, 165, 116, 0.15); color: var(--accent);
-      padding: 6px 18px; border-radius: 50px; font-weight: bold; font-size: 0.9rem;
-    }
-
+    .badge-tema { background: rgba(212, 165, 116, 0.15); color: var(--accent); padding: 6px 18px; border-radius: 50px; font-weight: bold; font-size: 0.9rem; }
     .historia-txt { font-size: 1.35rem; line-height: 1.8; color: var(--text); margin: 30px 0; text-align: justify; }
-
-    /* Estilo para los versículos múltiples */
     .palabra-box { background: #fdfaf6; padding: 25px; border-radius: 20px; border: 1px solid #f1ece4; margin-bottom: 30px; }
-    .palabra-item { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(212, 165, 116, 0.2); }
-    .palabra-item:last-child { margin-bottom: 0; padding-bottom: 0; border: none; }
     .v-texto { font-style: italic; font-size: 1.3rem; color: var(--primary); display: block; margin-bottom: 5px; }
     .v-ref { font-weight: bold; color: var(--accent); font-size: 0.9rem; text-transform: uppercase; }
+    .oracion-box { background: var(--primary); color: white; padding: 30px; border-radius: 20px; }
 
-    .oracion-box {
-      background: var(--primary); color: white; padding: 30px; border-radius: 20px;
-      box-shadow: 0 10px 20px rgba(26, 77, 46, 0.15);
-    }
-    .oracion-box h4 { color: var(--accent); margin: 0 0 10px 0; letter-spacing: 1px; }
-
+    /* Estilos de Navegación */
     .nav-actions { display: flex; gap: 20px; margin-top: 40px; }
-    .btn-nav {
-      flex: 1; padding: 18px; border-radius: 50px; border: none;
-      background: white; color: var(--primary); font-weight: bold; font-size: 1rem;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s;
-    }
-    .btn-nav:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    .btn-nav { flex: 1; padding: 18px; border-radius: 50px; border: none; background: white; color: var(--primary); font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+    /* ESTILOS DEL ARTÍCULO SEO */
+    .poder-indexacion { margin-top: 60px; padding: 40px; background: white; border-radius: 25px; line-height: 1.8; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+    .poder-indexacion h2 { font-family: 'Playfair Display'; color: var(--primary); font-size: 2rem; margin-top: 0; }
+    .divider { width: 60px; height: 4px; background: var(--accent); margin-bottom: 30px; border-radius: 2px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+    .info-item { background: #fdfaf6; padding: 15px; border-radius: 10px; border-left: 3px solid var(--primary); font-size: 0.95rem; }
+    blockquote { background: #1a4d2e10; padding: 30px; font-style: italic; border-radius: 15px; text-align: center; color: var(--primary); font-weight: 600; margin: 30px 0; }
 
     @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } }
   </style>
 
   <script is:inline>
-    // URL de su GitHub (Asegúrese de que el JSON tenga el formato del array [{},{}])
     const GITHUB_URL = "https://raw.githubusercontent.com/jair2471-blip/vivenciasbiblicas/main/vivencias-biblia.json";
-    
     let vivencias = [];
     let currentIdx = 0;
 
@@ -78,24 +93,19 @@ import PageLayout from '../layouts/PageLayout.astro';
       try {
         const response = await fetch(GITHUB_URL);
         vivencias = await response.json();
-        
         document.getElementById('loader').style.display = 'none';
         document.getElementById('hero-gallery').style.display = 'block';
-        
         render();
       } catch (error) {
-        console.error("Error al orbitar los datos:", error);
-        document.getElementById('loader').innerText = "❌ No pudimos conectar con los datos en GitHub.";
+        document.getElementById('loader').innerText = "❌ Error al conectar con GitHub.";
       }
     }
 
     function render() {
       const v = vivencias[currentIdx];
       const container = document.getElementById('hero-gallery');
-      
-      // Mapeamos los versículos del array "palabra"
       const palabrasHTML = v.palabra.map(p => `
-        <div class="palabra-item">
+        <div style="margin-bottom:15px;">
           <span class="v-texto">"${p.texto}"</span>
           <span class="v-ref">${p.referencia}</span>
         </div>
@@ -104,20 +114,17 @@ import PageLayout from '../layouts/PageLayout.astro';
       container.innerHTML = `
         <div class="card">
           <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <h2 style="font-family:'Playfair Display'; margin:0; font-size:2.8rem; color:var(--primary); line-height:1;">${v.personaje}</h2>
+            <h2 style="font-family:'Playfair Display'; margin:0; font-size:2.8rem; color:var(--primary);">${v.personaje}</h2>
             <span class="badge-tema">${v.tema}</span>
           </div>
-          
           <p class="historia-txt">${v.historia}</p>
-
           <div class="palabra-box">
-            <h4 style="margin:0 0 15px 0; color:var(--accent); font-size:0.8rem; letter-spacing:2px;">ESCRITURAS CLAVE</h4>
+            <h4 style="margin:0 0 15px 0; color:var(--accent); font-size:0.8rem;">ESCRITURAS CLAVE</h4>
             ${palabrasHTML}
           </div>
-
           <div class="oracion-box">
             <h4>🙏 ORACIÓN</h4>
-            <p style="margin:0; font-size:1.15rem; line-height:1.6; font-style: italic;">${v.oracion}</p>
+            <p style="margin:0; font-size:1.15rem; font-style: italic;">${v.oracion}</p>
           </div>
         </div>
       `;
@@ -125,7 +132,6 @@ import PageLayout from '../layouts/PageLayout.astro';
 
     window.next = () => { currentIdx = (currentIdx + 1) % vivencias.length; render(); window.scrollTo({top:0, behavior:'smooth'}); }
     window.prev = () => { currentIdx = (currentIdx - 1 + vivencias.length) % vivencias.length; render(); window.scrollTo({top:0, behavior:'smooth'}); }
-
     init();
   </script>
 </PageLayout>
