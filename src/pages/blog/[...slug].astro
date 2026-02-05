@@ -1,20 +1,132 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
 
+// 1. Generar las rutas para cada post
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
 	return posts.map((post) => ({
-		params: { slug: post.id },
+		params: { slug: post.id }, 
 		props: post,
 	}));
 }
-type Props = CollectionEntry<'blog'>;
 
+// 2. Obtener los datos del post
 const post = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+<PageLayout title={post.data.title}>
+	<article class="post-art">
+		<header class="post-header">
+			<div class="post-meta">
+				<span class="date">
+					{post.data.pubDate.toLocaleDateString('es-ES', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					})}
+				</span>
+			</div>
+			<h1>{post.data.title}</h1>
+			{post.data.heroImage && (
+				<img src={post.data.heroImage} alt={post.data.title} class="hero-img" />
+			)}
+			<div class="divider"></div>
+		</header>
+		
+		<div class="prose">
+			<Content />
+		</div>
+
+		<footer class="post-footer">
+			<a href="/blog" class="back-link">← Volver a Reflexiones</a>
+		</footer>
+	</article>
+</PageLayout>
+
+<style>
+	.post-art {
+		max-width: 750px;
+		margin: 0 auto;
+		padding: 3rem 1rem;
+	}
+	.post-header {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.post-meta {
+		margin-bottom: 1rem;
+	}
+	.date {
+		color: var(--accent);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		font-size: 0.9rem;
+	}
+	h1 {
+		font-family: 'Playfair Display', serif;
+		font-size: clamp(2rem, 5vw, 3rem);
+		color: var(--primary);
+		line-height: 1.2;
+		margin: 0.5rem 0 2rem 0;
+	}
+	.hero-img {
+		width: 100%;
+		border-radius: 15px;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+		margin-bottom: 2rem;
+	}
+	.divider {
+		height: 2px;
+		width: 60px;
+		background: var(--accent);
+		margin: 2rem auto;
+		opacity: 0.5;
+	}
+
+	/* Estilos para el contenido Markdown */
+	.prose {
+		font-family: 'Crimson Text', serif;
+		font-size: 1.35rem;
+		line-height: 1.8;
+		color: #2d3748;
+	}
+	:global(.prose h2) {
+		font-family: 'Playfair Display', serif;
+		color: var(--primary);
+		margin-top: 2.5rem;
+		font-size: 1.8rem;
+	}
+	:global(.prose p) {
+		margin-bottom: 1.5rem;
+	}
+	:global(.prose blockquote) {
+		border-left: 5px solid var(--accent);
+		padding: 1rem 2rem;
+		margin: 2rem 0;
+		background: #fdfaf6;
+		font-style: italic;
+		border-radius: 0 10px 10px 0;
+	}
+	:global(.prose strong) {
+		color: var(--primary);
+	}
+
+	.post-footer {
+		margin-top: 5rem;
+		padding-top: 2rem;
+		border-top: 1px solid #eee;
+		text-align: center;
+	}
+	.back-link {
+		color: var(--primary);
+		text-decoration: none;
+		font-weight: bold;
+		transition: color 0.3s;
+	}
+	.back-link:hover {
+		color: var(--accent);
+	}
+</style>
